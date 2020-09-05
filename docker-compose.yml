@@ -15,20 +15,23 @@ services:
     volumes:
       - ./www/html:/var/www/html
     depends_on:
-      - db
+      - mysql
 
-  db:
+  mysql:
     image: mysql:5.7
-    ports:
-      - 13306:3306
-    volumes:
-      - ./mysql/data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: mysql_database
+      MYSQL_USER: root
+      MYSQL_PASSWORD: mysql_pw
+      MYSQL_ROOT_PASSWORD: takashi_pass
+    ports:
+      - 3306:3306
+    # volumes:
+    #   - ./mysql/data:/var/lib/mysql      
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     ports:
       - 8888:80
     depends_on:
-      - db
+      - mysql
